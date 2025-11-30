@@ -32,8 +32,8 @@ function makeLogger(cfgDebug) {
     const enabled = !!cfgDebug || DEBUG_ENV;
     return {
         debug: (...a) => { if (enabled) console.log('[DEBUG]', ...a); },
-        info:  (...a) => console.log('[INFO]', ...a),
-        warn:  (...a) => console.warn('[WARN]', ...a),
+        info: (...a) => console.log('[INFO]', ...a),
+        warn: (...a) => console.warn('[WARN]', ...a),
         error: (...a) => console.error('[ERROR]', ...a)
     };
 }
@@ -248,7 +248,8 @@ class M3UEPGAddon {
                     );
 
                 currentItem.type = isSeries ? 'series' : (isMovie ? 'movie' : 'tv');
-                currentItem.id = `iptv_${crypto.createHash('md5').update(currentItem.name + currentItem.url).digest('hex').substring(0, 16)}`;
+                // FIX: Use only name for ID generation to handle dynamic URLs (tokens) that change on every fetch
+                currentItem.id = `iptv_${crypto.createHash('md5').update(currentItem.name).digest('hex').substring(0, 16)}`;
                 items.push(currentItem);
                 currentItem = null;
             }
